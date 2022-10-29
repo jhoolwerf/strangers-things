@@ -1,35 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Home, Listings, AccountForm, CreateListingForm, Item } from "./components/Index";
-import { fetchPosts } from './api/api';
+import { Home, Posts, AccountForm, CreatePostForm, Item } from "./components/Index";
+import { fetchPosts, getUser } from './api/api';
 import "./app.css";
 
 const App = () => {
-    const {post, setPost} = useState([]);
+    const [post, setPost] = useState([]);
     const [token, setToken] = useState(
         window.localStorage.getItem("token") || null
     );
+    const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const getPosts = async () => {
-            const {error, posts} = await fetchPosts(token);
-            if (error) {
+     const getPosts = async () => {
+       const {error, posts} = await fetchPosts(token);
+           if (error) {
                 console.error(error);
               }
         
               setPost(posts);
             };
-            getPosts();
-          }, [token]);
+      useEffect(() => {
+        getPosts();
+      }, [token]);
         
-          useEffect(() => {
-            console.log("HERE");
+     useEffect(() => {
+        console.log("HERE");
             if (token) {
-              const getGuest = async () => {
-                const { guest } = await fetchGuest(token);
-                setGuest(guest);
+              const fetchUser = async () => {
+                const { user } = await getUser(token);
+                setUser(user);
               };
-              getGuest();
+              fetchUser();
             }
           }, [token]);
         
@@ -43,15 +44,15 @@ const App = () => {
         
           const logOut = () => {
             setToken(null);
-            setGuest(null);
+            setUser(null);
             history.push("/");
           };
 
   return (
     <div className='container'>
-        <nav className="ui text menu">
+        <nav className="ui secondary menu">
             <Link className="item" to="/">Home</Link>
-            <Link className="item" to="/listings">Listings</Link>
+            <Link className="item" to="/listings">Posts</Link>
             <div className="right menu">
                 {token ? (
                     <button onClick={logOut} className="item">Log Out</button>
@@ -64,15 +65,28 @@ const App = () => {
             </div>
         </nav>
         <Switch>
-            <Route exact path="/">
-                <Home guest={guest}/>
-            </Route>
-            <Route className="item" path="/listings">
-                <Listings />
-            </Route>
-        </Switch>
+          <Route exact path="/">
+           <Home user={user} />
+          </Route>
+        <Route path="/posts/create">
+          <CreatePostForm token={token} setPost={post} />
+        </Route>
+        <Route path="/posts/:posts_Id">
+          <Posts token={token} post={post} getPosts={getPosts}/>
+        </Route>
+        <Route path="/posts">
+          <Posts
+            post={post}
+            token={token}
+            setPost={setPost}
+          />
+        </Route>
+        <Route path="/account/:action">
+          <AccountForm setToken={setToken} />
+        </Route>
+      </Switch>
     </div>
-  )
-}
+  );
+};
 
 export default App;

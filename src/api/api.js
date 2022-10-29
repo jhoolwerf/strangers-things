@@ -45,7 +45,7 @@ export const fetchPosts = async (token) => {
         };
     }
     } catch(error) {
-        console.error("Whoops! There was an error fetching the posts.", error);
+        console.error("Whoops! There was an error fetching the posts" + error);
     
     return {
         error: "Failed to load posts",
@@ -147,18 +147,58 @@ export const getUser = async (token) => {
         }
 };
 
-export const createPost = async (token) => {
+export const createPost = async (token, post, description) => {
     try {
-
+        const posting = {
+            post: post,
+        };
+        if (post) {
+            posting.post = post;
+        }
+        const { success, error, data } = await callAPI("/posts", {
+            token: token,
+            method: "POST",
+            body: {
+                post: post,
+            },
+        });
+        if (success) {
+            return {
+                error: null,
+                post: data.post,
+            };
+        }
      } catch(error) {
-        console.error("Couldn't create post. Try again.")
+        console.error("Couldn't create post. Try again.", error);
+            return {
+                error: "Failed to creat post.",
+                post: null,
+            };
 }};
 
 
-export const deletePost = async (token) => {
+export const deletePost = async (token, post_ID) => {
     try {
-        
-    } catch(error) {
-        console.error("Delete post failed. Please try again.", error)
-    }
+        const { success, error, data } = await callAPI(`posts/${post_ID}`, {
+            method: "DELETE",
+            token: token,
+        });
+        if (success) {
+            return {
+                error: null,
+                data: null,
+            };
+        } else {
+            return {
+                error: error.message,
+                data: null,
+            };
+        }
+            } catch(error) {
+            console.error("Delete post failed. Please try again.", error);
+            return {
+                error: "Failed to delete post.",
+                data: null,
+            };
+        }
 };

@@ -1,4 +1,4 @@
 export { default as Home } from "./Home";
-export { default as Listings } from "./Listings";
+export { default as Posts } from "./Posts";
 export { default as AccountForm } from "./AccountForm";
-export { default as CreateListingForm } from "./CreateListingForm";
+export { default as CreatePostForm } from "./CreatePostForm";
