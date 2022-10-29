@@ -7,7 +7,7 @@ const AccountForm = ({setToken}) => {
   const [password, setPassword] = useState("");
 
   const {action} = useParams();
-  const history = useHistory;
+  const history = useHistory();
   console.group("action", action);
 
   const onSubmitHandler = async (event) => {
@@ -15,9 +15,11 @@ const AccountForm = ({setToken}) => {
     const authFn = action === "register" ? registerUser : loginUser;
     const {error, token, message} = await authFn(username, password);
 
+    if (error) {
     console.error(error);
+    }
     setToken(token);
-
+  
     if (token) {
       history.push("/");
     }

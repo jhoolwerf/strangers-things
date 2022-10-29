@@ -1,4 +1,4 @@
-const BASEURL = "https://strangers-things.herokuapp.com/2207-FTB-ET-WEB-PT"
+const BASEURL = "https://strangers-things.herokuapp.com/api/2207-FTB-ET-WEB-PT"
 
 
 const makeHeaders = (token) => {
@@ -90,7 +90,7 @@ export const loginUser = async (username, password) => {
 
 export const registerUser = async (username, password) => {
     try {
-        const {success, error, data} = await callAPI("/user/register", {
+        const {success, error, data} = await callAPI("/users/register", {
             method: "POST",
             body: {
                 user: {
@@ -147,21 +147,21 @@ export const getUser = async (token) => {
         }
 };
 
-export const createPost = async (token, post, description) => {
+export const createPost = async (token, title, description) => {
     try {
-        const posting = {
-            post: post,
-        };
-        if (post) {
-            posting.post = post;
-        }
-        const { success, error, data } = await callAPI("/posts", {
-            token: token,
-            method: "POST",
-            body: {
-                post: post,
-            },
-        });
+        // const posting = {
+        //     post: post,
+        // };
+        // if (post) {
+        //     posting.post = post;
+        // }
+        // const { success, error, data } = await callAPI("/posts", {
+        //     token: token,
+        //     method: "POST",
+        //     body: {
+        //         post: description,
+        //     },
+        // });
         if (success) {
             return {
                 error: null,

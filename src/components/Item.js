@@ -1,20 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { deletePost } from '../api/api';
 
+const Item = ({item, setItem, token}) => {
 
-
-export const Item = ({item, setItem, token}) => {
   const handleDeleteClick = async (_postID) => {
     await deletePost(token, _postID);
     setItem((prevItem) =>
       prevItem.filter((item) => item.id !== _postID)
     );
   };
-
+console.log(item)
   return (
     <div className="ui card">
-      <div className="left floated aligned header">{post.item}</div>
-        {post.isCreator ? (
+      <div className="left floated aligned header">{item.description}</div>
+        {item.isCreator ? (
           <div className="right floated aligned tiny header">Mine</div>
         ) : null}
         <div className="centered aligned description">
@@ -30,9 +30,9 @@ export const Item = ({item, setItem, token}) => {
           className="ui divided relaxed list"
           style={{ color: 'whitesmoke' }}
         >
-          {post.isCreator ? (
+          {item.isCreator ? (
             <button
-              onClick={() => handleDeleteClick(post.id)}
+              onClick={() => handleDeleteClick(item.id)}
               className="negative ui button left floated"
             >
               Delete

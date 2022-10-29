@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Home, Posts, AccountForm, CreatePostForm, Item } from "./components/Index";
+import { Home, Posts, AccountForm, CreatePostForm } from "./components/Index";
 import { fetchPosts, getUser } from './api/api';
 import "./app.css";
 
@@ -13,6 +13,7 @@ const App = () => {
 
      const getPosts = async () => {
        const {error, posts} = await fetchPosts(token);
+       console.log(posts)
            if (error) {
                 console.error(error);
               }
@@ -52,7 +53,7 @@ const App = () => {
     <div className='container'>
         <nav className="ui secondary menu">
             <Link className="item" to="/">Home</Link>
-            <Link className="item" to="/listings">Posts</Link>
+            <Link className="item" to="/posts">Posts</Link>
             <div className="right menu">
                 {token ? (
                     <button onClick={logOut} className="item">Log Out</button>
@@ -69,10 +70,7 @@ const App = () => {
            <Home user={user} />
           </Route>
         <Route path="/posts/create">
-          <CreatePostForm token={token} setPost={post} />
-        </Route>
-        <Route path="/posts/:posts_Id">
-          <Posts token={token} post={post} getPosts={getPosts}/>
+          <CreatePostForm token={token} setPost={setPost} />
         </Route>
         <Route path="/posts">
           <Posts

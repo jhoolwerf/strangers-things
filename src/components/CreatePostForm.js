@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { createPost } from '../api/api';
 
 const CreatePostForm = ({token, posts}) => {
   const history = useHistory();
   const [description, setDescription] = useState("");
-  const [post, setPost] = useState("");
+  //const [post, setPost] = useState("");
+  const [title, setTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   return (
     <form
       className="ui form"
       onSubmit={async (event) => {
         event.preventDefault();
-        const {error, listing} = await CreatePostForm(
-          token,
-          description,
-          listing
-        );
-        if(listing) {
-          listing.isCreator = true;
-          setPost((prevPost) => [...prevPost, posts]);
+   //     const {post, error} = await createPost(
+        //   token,
+        //   title,
+        //   description
+        // );
+        console.log(title, description)
+        if(post) {
+          post.isCreator = true;
+    //      setPost((prevPost) => [...prevPost, posts]);
           setDescription("");
-          setPost("");
+          setTitle("");
           history.push("/posts");
         } else {
           setErrorMessage(error);
@@ -29,26 +32,26 @@ const CreatePostForm = ({token, posts}) => {
     >
       <h2>Create Post</h2>
       <div className="field">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="item">Item</label>
         <input
-          name="description"
+          name="item"
           type="text"
           placeholder="What are you selling?"
           required
           autoComplete="off"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
           ></input>
       </div>
       <div className="field">
-        <label htmlFor="listing">Listing</label>
+        <label htmlFor="description">Description</label>
         <input
-          name="listing"
+          name="description"
           type="text"
           placeholder="Please describe the item."
           autoComplete="off"
-          value={posts}
-          onChange={(event) => setPost(event.target.value)}
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
         ></input>
       </div>
 

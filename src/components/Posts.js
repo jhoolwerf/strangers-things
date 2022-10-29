@@ -19,7 +19,7 @@ const Posts = ({ post, setPost, token }) => {
       <div className="listing-container">
         {post.map((post) => {
           return (
-            <PostDetail key={post.id} post={post}
+            <Item key={post.id} item={post}
             headerElement={post.isCreator ? <div className="right floated aligned tiny header">My Post</div> : null}
             >
               {post.isCreator ? (
@@ -28,7 +28,7 @@ const Posts = ({ post, setPost, token }) => {
                 >
                   Delete</button>
               ) : null}
-              </PostDetail>
+              </Item>
           );
         })}
       </div>
