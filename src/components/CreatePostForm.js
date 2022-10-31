@@ -5,7 +5,6 @@ import { createPost } from '../api/api';
 const CreatePostForm = ({token, posts}) => {
   const history = useHistory();
   const [description, setDescription] = useState("");
-  //const [post, setPost] = useState("");
   const [title, setTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   return (
@@ -13,15 +12,10 @@ const CreatePostForm = ({token, posts}) => {
       className="ui form"
       onSubmit={async (event) => {
         event.preventDefault();
-   //     const {post, error} = await createPost(
-        //   token,
-        //   title,
-        //   description
-        // );
+
         console.log(title, description)
         if(post) {
           post.isCreator = true;
-    //      setPost((prevPost) => [...prevPost, posts]);
           setDescription("");
           setTitle("");
           history.push("/posts");

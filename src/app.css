@@ -1,16 +1,15 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.listing-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 40px;
 }
 
 body {
     font-family: fantasy;
     background-color: rgb(53, 98, 108);
-    color: black;
-    line-height: 1.2;
     background-image: url(https://hips.hearstapps.com/hmg-prod/images/pile-of-household-things-and-decorative-objects-at-royalty-free-image-1622082787.jpg);
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     width: 100vw;
     height: 100vh;
     background-position: center;
@@ -22,10 +21,9 @@ ul {
 }
 
 .container {
-    max-width: 800px;
     margin: auto;
-    padding: 10 25px;
-    color: black;
+    color: white;
+    padding: 50px;
 }
 
 nav {
@@ -35,7 +33,7 @@ nav {
     margin-bottom: 10px;
     width: 10px;
     height: 20px;
-    color: black;
+    color: white;
 }
 
 .card {
@@ -43,12 +41,4 @@ nav {
     color: black;
     border-radius: 10px;
     padding: 5px 45px;
-}
-
-.listing-container {
-    padding: 40px;
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: left;
 }
