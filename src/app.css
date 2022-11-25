@@ -1,8 +1,16 @@
-.listing-container {
+.listing-container,
+.filtered {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    align-items: center;
     padding: 40px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 body {
@@ -41,4 +49,8 @@ nav {
     color: black;
     border-radius: 10px;
     padding: 5px 45px;
+}
+
+.Links {
+    color: white;
 }

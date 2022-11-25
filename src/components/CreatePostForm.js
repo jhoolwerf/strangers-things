@@ -2,27 +2,38 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { createPost } from '../api/api';
 
-const CreatePostForm = ({token, posts}) => {
+const CreatePostForm = ({token, setPost}) => {
   const history = useHistory();
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  
+
   return (
     <form
       className="ui form"
       onSubmit={async (event) => {
         event.preventDefault();
 
-        console.log(title, description)
+        const { post, error } = await createPost(
+          token,
+          title,
+          description,
+          price
+        );
+
         if(post) {
-          post.isCreator = true;
-          setDescription("");
+          setPost((previousPost) => [...previousPost, post]);
           setTitle("");
+          setDescription("");
+          setPrice("");
           history.push("/posts");
         } else {
-          setErrorMessage(error);
+            setErrorMessage(error)
         }
       }}
+    
     >
       <h2>Create Post</h2>
       <div className="field">
@@ -46,6 +57,17 @@ const CreatePostForm = ({token, posts}) => {
           autoComplete="off"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+        ></input>
+      </div>
+      <div className="field">
+        <label htmlFor="description">Price</label>
+        <input
+          name="price"
+          type="text"
+          placeholder="How much is this item?"
+          autoComplete="off"
+          value={price}
+          onChange={(event) => setPrice(event.target.value)}
         ></input>
       </div>
 

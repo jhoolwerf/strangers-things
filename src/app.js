@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Home, Posts, AccountForm, CreatePostForm } from "./components/Index";
+import { Home, Posts, AccountForm, CreatePostForm, Messages } from "./components/Index";
 import { fetchPosts, getUser } from './api/api';
 import "./app.css";
 
@@ -13,7 +13,7 @@ const App = () => {
 
      const getPosts = async () => {
        const {error, posts} = await fetchPosts(token);
-       console.log(posts)
+      //  console.log(posts)
            if (error) {
                 console.error(error);
               }
@@ -25,7 +25,6 @@ const App = () => {
       }, [token]);
         
      useEffect(() => {
-        console.log("HERE");
             if (token) {
               const fetchUser = async () => {
                 const { user } = await getUser(token);
@@ -39,7 +38,7 @@ const App = () => {
             if (token) {
               window.localStorage.setItem("token", token);
             } else {
-              window.localStorage.removeItem("token");
+              window.localStorage.removeItem("token", token);
             }
           }, [token]);
         
@@ -79,8 +78,18 @@ const App = () => {
             setPost={setPost}
           />
         </Route>
+        <Route className="item" path="/posts">
+          <Posts
+            post={post}
+            token={token}
+            setPost={setPost}
+          />
+        </Route>
         <Route path="/account/:action">
           <AccountForm setToken={setToken} />
+        </Route>
+        <Route path="/users/me">
+          <Messages />
         </Route>
       </Switch>
     </div>

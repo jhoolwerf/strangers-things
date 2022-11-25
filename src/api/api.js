@@ -45,7 +45,7 @@ export const fetchPosts = async (token) => {
         };
     }
     } catch(error) {
-        console.error("Whoops! There was an error fetching the posts" + error);
+        console.error("Whoops! There was an error fetching the posts", error);
     
     return {
         error: "Failed to load posts",
@@ -147,31 +147,33 @@ export const getUser = async (token) => {
         }
 };
 
-export const createPost = async (token, title, description) => {
+export const createPost = async (token, title, description, price) => {
     try {
-        // const posting = {
-        //     post: post,
-        // };
-        // if (post) {
-        //     posting.post = post;
-        // }
-        // const { success, error, data } = await callAPI("/posts", {
-        //     token: token,
-        //     method: "POST",
-        //     body: {
-        //         post: description,
-        //     },
-        // });
+
+        const post = {
+            title: title,
+            description: description,
+            price: price,
+        };
+        const { success, error, data } = await callAPI("/posts", {
+            token: token,
+            method: "POST",
+            body: { post: post },
+        });
         if (success) {
             return {
                 error: null,
                 post: data.post,
             };
-        }
+        } else {
+            return { error: error.message,
+            post: null
+        };
+      }
      } catch(error) {
         console.error("Couldn't create post. Try again.", error);
             return {
-                error: "Failed to creat post.",
+                error: "Failed to create post.",
                 post: null,
             };
 }};
@@ -179,26 +181,48 @@ export const createPost = async (token, title, description) => {
 
 export const deletePost = async (token, post_ID) => {
     try {
-        const { success, error, data } = await callAPI(`posts/${post_ID}`, {
+        await fetch (`${BASEURL}/posts/${post_ID}`, {
             method: "DELETE",
-            token: token,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
         });
-        if (success) {
-            return {
-                error: null,
-                data: null,
-            };
-        } else {
-            return {
-                error: error.message,
-                data: null,
-            };
-        }
             } catch(error) {
             console.error("Delete post failed. Please try again.", error);
-            return {
-                error: "Failed to delete post.",
-                data: null,
-            };
         }
+};
+
+export const addMessage = async (token, post_ID, message) => {
+    try {
+        const { success, error, data } = await callAPI(`/posts/${post_ID}/messages`,
+            { token: token,
+              method: "POST",
+              body: {
+                message: {
+                    content: message,
+                },
+              },
+            });
+            if (success) {
+                return {
+                    success: success,
+                    error: null,
+                    messages: data.messages,
+                };
+            } else {
+                return {
+                    success: success,
+                    error: error.message,
+                    message: null,
+                };
+            }
+    } catch (error) {
+        console.error("Posting message failed", error);
+        return {
+            success: false,
+            error: "Failed to create message",
+            comment: null,
+        };
+    }
 };

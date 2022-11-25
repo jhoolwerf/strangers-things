@@ -1,37 +1,37 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Item from './Item';
 import { Link } from "react-router-dom";
-import { deletePost } from '../api/api';
 
 const Posts = ({ post, setPost, token }) => {
-  console.log("posts", post);
 
-  const handleDeleteClick = async (post_ID) => {
-    await deletePost(token, post_ID);
-    setPost((prevPost) =>
-    prevPost.filter((post) => post.id !== post_ID)
-    );
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+     
   
   return (
     <>
       <Link to="/posts/create" className="ui button">Create Post</Link>
-      <div className="listing-container">
-        {post.map((post) => {
-          return (
-            <Item key={post.id} item={post}
-            headerElement={post.isCreator ? <div className="right floated aligned tiny header">My Post</div> : null}
-            >
-              {post.isCreator ? (
-                <button onClick={() => handleDeleteClick(post.id)}
-                className="negative ui button left floated"
-                >
-                  Delete</button>
-              ) : null}
-              </Item>
-          );
-        })}
-      </div>
+      <div className="search">
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+        <i className="search icon"></i>
+        </div>
+        <div className="filtered">
+          {post.filter((post) => {
+            if (searchTerm === "") {
+              return post;
+            } else if (
+              post.title.toLowerCase().includes(searchTerm.toLowerCase()) || post.description.toLowerCase().includes(searchTerm.toLowerCase())
+            ) {
+              return post;
+            }
+          }).map((post) => {
+            return <Item className="listing-container" key={post._id} item={post} setPost={setPost} token={token} />
+          })}
+        </div>
     </>
   )};
 
